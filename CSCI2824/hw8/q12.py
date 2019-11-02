@@ -1,13 +1,9 @@
+import math
 def treasure_hunt(m, n, p):
     a = m * n
-    k = a
+    k = m * n - p
+    d = math.factorial(a) / math.factorial(a - p) / math.factorial(p)
     t = a - p
-     = k - 1
-    d = 1
-    for i in range(, a - 1):
-        d = d * i
-    for i in range(1, p):
-        d = d / i
-    return k * t * d
+    return int(k * d * t)
 
-print(treasure_hunt(2, 2, 1))
+print(treasure_hunt(3, 4, 2))
